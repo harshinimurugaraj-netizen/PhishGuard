@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishGuard | URL Security Scanner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">🛡️ PhishGuard</div>
+        <span class="nav-tag">WEB SECURITY</span>
+    </nav>
+
+    <main class="container">
+
+        <section class="hero">
+            <div class="shield">🛡️</div>
+            <p class="eyebrow">SMART URL PROTECTION</p>
+            <h1>Detect Phishing.<br><span>Stay Protected.</span></h1>
+            <p class="subtitle">
+                Check suspicious website links before you click.
+                Protect yourself from potential online threats.
+            </p>
+        </section>
+
+        <section class="scanner">
+            <h2>🔍 URL Security Scanner</h2>
+            <p>Enter a website URL to analyse its suspicious patterns.</p>
+
+            <form method="POST" action="/">
+                <input
+                    type="text"
+                    name="url"
+                    placeholder="https://example.com"
+                    value="{{ submitted_url }}"
+                    required
+                >
+                <button type="submit">Scan URL →</button>
+            </form>
+
+            {% if result %}
+            <div class="result {% if result.status == 'Suspicious' %}danger{% elif result.status == 'Invalid URL' %}danger{% else %}safe{% endif %}">
+                <h3>
+                    {% if result.status == 'Suspicious' %}
+                        ⚠️ Suspicious URL Detected!
+                    {% elif result.status == 'Invalid URL' %}
+                        ❌ Invalid URL
+                    {% else %}
+                        ✅ No Obvious Threats Detected
+                    {% endif %}
+                </h3>
+
+                <p><strong>Status:</strong> {{ result.status }}</p>
+                <p><strong>Risk score:</strong> {{ result.score }}</p>
+
+                <h4>Analysis Details</h4>
+                <ul>
+                    {% for reason in result.reasons %}
+                    <li>{{ reason }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </section>
+
+        <section class="features">
+            <div class="feature">
+                <span>🔎</span>
+                <h3>URL Analysis</h3>
+                <p>Checks suspicious URL patterns.</p>
+            </div>
+
+            <div class="feature">
+                <span>⚡</span>
+                <h3>Quick Scanning</h3>
+                <p>Analyses the entered URL instantly.</p>
+            </div>
+
+            <div class="feature">
+                <span>🔐</span>
+                <h3>Stay Alert</h3>
+                <p>Helps identify potentially risky links.</p>
+            </div>
+        </section>
+
+        <p class="disclaimer">
+            Educational prototype only. A low-risk result does not guarantee
+            that a website is safe. Do not enter passwords or personal details
+            on untrusted websites.
+        </p>
+
+    </main>
+
+    <footer>
+        © 2026 PhishGuard | Web Application Security Project
+    </footer>
+
+</body>
+</html>
